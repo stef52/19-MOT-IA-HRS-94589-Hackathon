@@ -6,8 +6,8 @@ namespace TC_Hackathon_Reviews.Models
     {
         public ReviewContext(DbContextOptions<ReviewContext> options) : base(options)
         {
-
         }
+
         public DbSet<ReviewItem> ReviewItem { get; set; }
     }
 }

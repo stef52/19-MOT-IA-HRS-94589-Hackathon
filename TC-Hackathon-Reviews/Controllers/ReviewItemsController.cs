@@ -1,10 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using TC_Hackathon_Reviews.Models;
 
 namespace TC_Hackathon_Reviews.Controllers
@@ -20,6 +18,19 @@ namespace TC_Hackathon_Reviews.Controllers
             _context = context;
         }
 
+        // DELETE: api/ReviewItems/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<ReviewItem>> DeleteReviewItem(long id)
+        {
+            var reviewItem = await _context.ReviewItem.FindAsync(id);
+            if (reviewItem == null) return NotFound();
+
+            _context.ReviewItem.Remove(reviewItem);
+            await _context.SaveChangesAsync();
+
+            return reviewItem;
+        }
+
         // GET: api/ReviewItems
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ReviewItem>>> GetReviewItem()
@@ -33,12 +44,23 @@ namespace TC_Hackathon_Reviews.Controllers
         {
             var reviewItem = await _context.ReviewItem.FindAsync(id);
 
-            if (reviewItem == null)
-            {
-                return NotFound();
-            }
+            if (reviewItem == null) return NotFound();
 
             return reviewItem;
+        }
+
+        // POST: api/ReviewItems
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
+        // more details see https://aka.ms/RazorPagesCRUD.
+        [HttpPost]
+        public async Task<ActionResult<ReviewItem>> PostReviewItem(ReviewItem reviewItem)
+        {
+            if (ReviewItemExists(reviewItem.Id))
+                ModelState.AddModelError("", "Item already exists");
+            if (!ModelState.IsValid) return BadRequest();
+            _context.ReviewItem.Add(reviewItem);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction("GetReviewItem", new { id = reviewItem.Id }, reviewItem);
         }
 
         // PUT: api/ReviewItems/5
@@ -47,10 +69,7 @@ namespace TC_Hackathon_Reviews.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutReviewItem(long id, ReviewItem reviewItem)
         {
-            if (id != reviewItem.Id)
-            {
-                return BadRequest();
-            }
+            if (id != reviewItem.Id) return BadRequest();
 
             _context.Entry(reviewItem).State = EntityState.Modified;
 
@@ -61,44 +80,11 @@ namespace TC_Hackathon_Reviews.Controllers
             catch (DbUpdateConcurrencyException)
             {
                 if (!ReviewItemExists(id))
-                {
                     return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
 
             return NoContent();
-        }
-
-        // POST: api/ReviewItems
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPost]
-        public async Task<ActionResult<ReviewItem>> PostReviewItem(ReviewItem reviewItem)
-        {
-            _context.ReviewItem.Add(reviewItem);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetReviewItem", new { id = reviewItem.Id }, reviewItem);
-        }
-
-        // DELETE: api/ReviewItems/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<ReviewItem>> DeleteReviewItem(long id)
-        {
-            var reviewItem = await _context.ReviewItem.FindAsync(id);
-            if (reviewItem == null)
-            {
-                return NotFound();
-            }
-
-            _context.ReviewItem.Remove(reviewItem);
-            await _context.SaveChangesAsync();
-
-            return reviewItem;
         }
 
         private bool ReviewItemExists(long id)
