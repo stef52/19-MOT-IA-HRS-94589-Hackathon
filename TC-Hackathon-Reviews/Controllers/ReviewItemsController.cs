@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using TC_Hackathon_Reviews.Models;
 
 namespace TC_Hackathon_Reviews.Controllers
@@ -53,11 +54,16 @@ namespace TC_Hackathon_Reviews.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ReviewItem>> PostReviewItem(ReviewItem reviewItem)
         {
             if (ReviewItemExists(reviewItem.Id))
                 ModelState.AddModelError("", "Item already exists");
-            if (!ModelState.IsValid) return BadRequest();
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             _context.ReviewItem.Add(reviewItem);
             await _context.SaveChangesAsync();
             return CreatedAtAction("GetReviewItem", new { id = reviewItem.Id }, reviewItem);
