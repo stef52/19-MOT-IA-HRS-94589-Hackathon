@@ -10,11 +10,11 @@ namespace TC_Hackathon_Reviews.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ReviewItemsController : ControllerBase
+    public class ReviewController : ControllerBase
     {
         private readonly ReviewContext _context;
 
-        public ReviewItemsController(ReviewContext context)
+        public ReviewController(ReviewContext context)
         {
             _context = context;
         }
