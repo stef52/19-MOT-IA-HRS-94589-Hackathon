@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using TC_Hackathon_Reviews.Contracts;
 using TC_Hackathon_Reviews.Data;
 using TC_Hackathon_Reviews.Models;
@@ -10,9 +9,9 @@ namespace TC_Hackathon_Reviews.Services
 {
     public class RatingService : IRatingService
     {
-        private readonly RatingContext _context;
+        private readonly ReviewContext _context;
 
-        public RatingService(RatingContext context)
+        public RatingService(ReviewContext context)
         {
             _context = context;
         }

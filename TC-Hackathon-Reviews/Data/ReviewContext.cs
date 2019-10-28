@@ -10,5 +10,6 @@ namespace TC_Hackathon_Reviews.Data
         }
 
         public DbSet<ReviewItem> ReviewItem { get; set; }
+        public DbSet<RatingItem> RatingItem { get; set; }
     }
 }
