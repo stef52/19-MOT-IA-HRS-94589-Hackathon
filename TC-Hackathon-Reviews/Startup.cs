@@ -7,8 +7,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using TC_Hackathon_Reviews.Contracts;
 using TC_Hackathon_Reviews.Data;
 using TC_Hackathon_Reviews.Models;
+using TC_Hackathon_Reviews.Services;
 
 namespace TC_Hackathon_Reviews
 {
@@ -51,8 +53,13 @@ namespace TC_Hackathon_Reviews
             services.AddDbContext<RatingContext>(opt =>
                 opt.UseInMemoryDatabase("RatingList"));
 
-            //services.AddDbContext<ReviewContext>(opt =>
-            //    opt.UseSqlServer(Configuration.GetConnectionString("ReviewContext")));
+            //services.AddDbContext<RatingContext>(options =>
+            //    options.UseSqlServer(
+            //        Configuration.GetConnectionString("ReviewContext")));
+
+
+            services.AddTransient<IReviewService, ReviewService>();
+            services.AddTransient<IRatingService, RatingService>();
 
             services.AddControllers();
 

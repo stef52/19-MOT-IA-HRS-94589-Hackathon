@@ -1,35 +1,34 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using TC_Hackathon_Reviews.Data;
+using Microsoft.AspNetCore.Mvc;
+using TC_Hackathon_Reviews.Contracts;
 using TC_Hackathon_Reviews.Models;
 
-namespace API.Controllers
+namespace TC_Hackathon_Reviews.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class RatingController : ControllerBase
     {
-        private readonly RatingContext _context;
+        private readonly IRatingService _ratingService;
 
-        public RatingController(RatingContext context)
+        public RatingController(IRatingService ratingService)
         {
-            _context = context;
+            _ratingService = ratingService;
         }
 
         // GET: api/Rating
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RatingItem>>> GetRatingItem()
         {
-            return await _context.RatingItem.ToListAsync();
+            return await _ratingService.GetRatings();
         }
 
         // GET: api/Rating/5
         [HttpGet("{id}")]
         public async Task<ActionResult<RatingItem>> GetRatingItem(long id)
         {
-            var ratingItem = await _context.RatingItem.FindAsync(id);
+            var ratingItem = await _ratingService.GetRating(id);
 
             if (ratingItem == null)
             {

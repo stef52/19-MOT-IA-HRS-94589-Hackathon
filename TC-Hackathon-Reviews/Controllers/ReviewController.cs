@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using TC_Hackathon_Reviews.Contracts;
+using TC_Hackathon_Reviews.Data;
 using TC_Hackathon_Reviews.Models;
 
 namespace TC_Hackathon_Reviews.Controllers
@@ -13,10 +14,12 @@ namespace TC_Hackathon_Reviews.Controllers
     public class ReviewController : ControllerBase
     {
         private readonly ReviewContext _context;
+        private readonly IReviewService _reviewService;
 
-        public ReviewController(ReviewContext context)
+        public ReviewController(ReviewContext context, IReviewService reviewService)
         {
             _context = context;
+            _reviewService = reviewService;
         }
 
         // DELETE: api/ReviewItems/5
@@ -36,14 +39,15 @@ namespace TC_Hackathon_Reviews.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ReviewItem>>> GetReviewItem()
         {
-            return await _context.ReviewItem.ToListAsync();
+            //return await _context.ReviewItem.ToListAsync();
+            return await _reviewService.GetReviewsAsync();
         }
 
         // GET: api/ReviewItems/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ReviewItem>> GetReviewItem(long id)
         {
-            var reviewItem = await _context.ReviewItem.FindAsync(id);
+            var reviewItem = await _reviewService.GetReview(id);
 
             if (reviewItem == null) return NotFound();
 
@@ -58,14 +62,14 @@ namespace TC_Hackathon_Reviews.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ReviewItem>> PostReviewItem(ReviewItem reviewItem)
         {
-            if (ReviewItemExists(reviewItem.Id))
+            if (_reviewService.ReviewItemExists(reviewItem.Id))
                 ModelState.AddModelError("", "Item already exists");
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            _context.ReviewItem.Add(reviewItem);
-            await _context.SaveChangesAsync();
+            await _reviewService.Add(reviewItem);
+
             return CreatedAtAction("GetReviewItem", new { id = reviewItem.Id }, reviewItem);
         }
 
@@ -85,17 +89,12 @@ namespace TC_Hackathon_Reviews.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ReviewItemExists(id))
+                if (!_reviewService.ReviewItemExists(id))
                     return NotFound();
                 throw;
             }
 
             return NoContent();
-        }
-
-        private bool ReviewItemExists(long id)
-        {
-            return _context.ReviewItem.Any(e => e.Id == id);
         }
     }
 }
