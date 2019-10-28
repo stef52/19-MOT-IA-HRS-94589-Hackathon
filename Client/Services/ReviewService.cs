@@ -1,7 +1,7 @@
 ﻿using Client.Models;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Client.Contracts;
 
 namespace Client.Services
 {
@@ -9,10 +9,10 @@ namespace Client.Services
     {
         private const string BaseUrl = "https://api20191027115858.azurewebsites.net/api/";
 
-        public async Task<object> GetReviews()
+        public async void Add(Review review)
         {
             var client = new HttpClient();
-            return await client.GetAsync<List<Review>>(BaseUrl + "Review");
+            await client.PostAsync<Review, Review>(BaseUrl + "Review", review);
         }
 
         public async Task<object> GetReview(long? id)
@@ -21,9 +21,10 @@ namespace Client.Services
             return await client.GetAsync<Review>(BaseUrl + "Review/" + id);
         }
 
-        public void Add(Review review)
+        public async Task<object> GetReviews()
         {
-            throw new NotImplementedException();
+            var client = new HttpClient();
+            return await client.GetAsync<List<Review>>(BaseUrl + "Review");
         }
     }
 }

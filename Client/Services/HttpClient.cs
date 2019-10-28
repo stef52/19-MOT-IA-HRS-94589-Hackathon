@@ -8,12 +8,28 @@ namespace Client.Services
 {
     public class HttpClient
     {
-        static readonly net.HttpClient _client;
+        private static readonly net.HttpClient _client;
+
         static HttpClient()
         {
             _client = new net.HttpClient();
             _client.DefaultRequestHeaders.Add("Accept", "application/json");
         }
+
+        public async Task<Response> DeleteAsync<Response>(
+            string url,
+            string token = null)
+        {
+            return await CreateRequest<Response>(url, net.HttpMethod.Delete, token);
+        }
+
+        public async Task<Response> GetAsync<Response>(
+            string url,
+            string token = null)
+        {
+            return await CreateRequest<Response>(url, net.HttpMethod.Get, token);
+        }
+
         public async Task<Response> PostAsync<Request, Response>(
             string url,
             Request input,
@@ -21,6 +37,7 @@ namespace Client.Services
         {
             return await CreateRequest<Response>(url, net.HttpMethod.Post, input, token);
         }
+
         public async Task<Response> PutAsync<Request, Response>(
             string url,
             Request input,
@@ -28,36 +45,25 @@ namespace Client.Services
         {
             return await CreateRequest<Response>(url, net.HttpMethod.Put, input, token);
         }
-        public async Task<Response> GetAsync<Response>(
-            string url,
-            string token = null)
-        {
-            return await CreateRequest<Response>(url, net.HttpMethod.Get, token);
-        }
-        public async Task<Response> DeleteAsync<Response>(
-            string url,
-            string token = null)
-        {
-            return await CreateRequest<Response>(url, net.HttpMethod.Delete, token);
-        }
+
         #region [ -- Private helper methods -- ]
-        async Task<Response> CreateRequest<Response>(
+
+        private async Task<Response> CreateRequest<Response>(
             string url,
             net.HttpMethod method,
             string token)
         {
-            return await CreateRequestMessage(url, method, token, async (msg) =>
-            {
-                return await GetResult<Response>(msg);
-            });
+            return await CreateRequestMessage(url, method, token,
+                async msg => { return await GetResult<Response>(msg); });
         }
-        async Task<Response> CreateRequest<Response>(
+
+        private async Task<Response> CreateRequest<Response>(
             string url,
             net.HttpMethod method,
             object input,
             string token)
         {
-            return await CreateRequestMessage(url, method, token, async (msg) =>
+            return await CreateRequestMessage(url, method, token, async msg =>
             {
                 using (var content = new net.StringContent(JObject.FromObject(input).ToString()))
                 {
@@ -67,7 +73,8 @@ namespace Client.Services
                 }
             });
         }
-        async Task<Response> CreateRequestMessage<Response>(
+
+        private async Task<Response> CreateRequestMessage<Response>(
             string url,
             net.HttpMethod method,
             string token,
@@ -82,7 +89,8 @@ namespace Client.Services
                 return await functor(msg);
             }
         }
-        async Task<Response> GetResult<Response>(net.HttpRequestMessage msg)
+
+        private async Task<Response> GetResult<Response>(net.HttpRequestMessage msg)
         {
             using (var response = await _client.SendAsync(msg))
             {
@@ -97,6 +105,7 @@ namespace Client.Services
                 }
             }
         }
+
         #endregion
     }
 }

@@ -2,6 +2,7 @@
 using Client.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Client.Contracts;
 
 namespace Client.Controllers
 {
@@ -12,29 +13,6 @@ namespace Client.Controllers
         public ReviewsController(IReviewService service)
         {
             _service = service;
-        }
-
-        // GET: Reviews
-        public async Task<IActionResult> Index()
-        {
-            return View(await _service.GetReviews());
-        }
-
-        // GET: Reviews/Details/5
-        public async Task<IActionResult> Details(long? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var review = await _service.GetReview(id);
-            if (review == null)
-            {
-                return NotFound();
-            }
-
-            return View(review);
         }
 
         // GET: Reviews/Create
@@ -55,7 +33,25 @@ namespace Client.Controllers
                 _service.Add(review);
                 return RedirectToAction(nameof(Index));
             }
+
             return View(review);
+        }
+
+        // GET: Reviews/Details/5
+        public async Task<IActionResult> Details(long? id)
+        {
+            if (id == null) return NotFound();
+
+            var review = await _service.GetReview(id);
+            if (review == null) return NotFound();
+
+            return View(review);
+        }
+
+        // GET: Reviews
+        public async Task<IActionResult> Index()
+        {
+            return View(await _service.GetReviews());
         }
     }
 }
