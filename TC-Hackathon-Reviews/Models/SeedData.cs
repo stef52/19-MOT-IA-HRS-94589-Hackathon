@@ -22,17 +22,14 @@ namespace TC_Hackathon_Reviews.Models
                 context.RatingItem.AddRange(
                     new RatingItem
                     {
-                        Id = 1,
                         Name = "Excellent"
                     },
                     new RatingItem
                     {
-                        Id = 2,
                         Name = "Moderate"
                     },
                     new RatingItem
                     {
-                        Id = 3,
                         Name = "Needs Improvement"
                     }
                 );

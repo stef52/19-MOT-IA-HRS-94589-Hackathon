@@ -68,7 +68,13 @@ namespace TC_Hackathon_Reviews.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            await _reviewService.Add(reviewItem);
+            var saved = await _reviewService.Add(reviewItem);
+
+            if (saved == 0)
+            {
+                ModelState.AddModelError("", "Please select a valid rating");
+                return BadRequest(ModelState);
+            }
 
             return CreatedAtAction("GetReviewItem", new { id = reviewItem.Id }, reviewItem);
         }

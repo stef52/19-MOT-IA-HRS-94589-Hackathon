@@ -9,7 +9,7 @@ using TC_Hackathon_Reviews.Data;
 namespace TC_Hackathon_Reviews.Migrations
 {
     [DbContext(typeof(ReviewContext))]
-    [Migration("20191028174731_InitialCreate")]
+    [Migration("20191028190306_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,7 +59,7 @@ namespace TC_Hackathon_Reviews.Migrations
             modelBuilder.Entity("TC_Hackathon_Reviews.Models.ReviewItem", b =>
                 {
                     b.HasOne("TC_Hackathon_Reviews.Models.RatingItem", "Rating")
-                        .WithMany()
+                        .WithMany("Reviews")
                         .HasForeignKey("RatingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

@@ -4,6 +4,8 @@ namespace TC_Hackathon_Reviews.Models
 {
     public class ReviewItem
     {
+        [Key]
+        [Required]
         public long Id { get; set; }
 
         [MaxLength(250)]
@@ -11,7 +13,5 @@ namespace TC_Hackathon_Reviews.Models
 
         [Required]
         public long RatingId { get; set; }
-
-        public RatingItem Rating { get; set; }
     }
 }

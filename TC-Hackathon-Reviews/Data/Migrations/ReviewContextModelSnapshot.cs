@@ -57,7 +57,7 @@ namespace TC_Hackathon_Reviews.Migrations
             modelBuilder.Entity("TC_Hackathon_Reviews.Models.ReviewItem", b =>
                 {
                     b.HasOne("TC_Hackathon_Reviews.Models.RatingItem", "Rating")
-                        .WithMany()
+                        .WithMany("Reviews")
                         .HasForeignKey("RatingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

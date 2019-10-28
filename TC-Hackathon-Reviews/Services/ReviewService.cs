@@ -37,11 +37,16 @@ namespace TC_Hackathon_Reviews.Services
 
         public async Task<int> Add(ReviewItem reviewItem)
         {
-            //var rating = _ratingService.GetRating(reviewItem.RatingId);
-            ////TODO make sure not null
-            //reviewItem.Rating = await rating;
+            var rating = await _ratingService.GetRating(reviewItem.RatingId);
+
+            if (rating == null)
+            {
+                return 0;
+            }
+
             _context.ReviewItem.Add(reviewItem);
-            return await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
+            return 1;
         }
     }
 }

@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace TC_Hackathon_Reviews.Models
 {
     public class RatingItem
     {
+        [Key]
+        [Required]
         public long Id { get; set; }
+        [Required]
         public string Name { get; set; }
-        public virtual ICollection<ReviewItem> Reviews { get; set; }
     }
 }
