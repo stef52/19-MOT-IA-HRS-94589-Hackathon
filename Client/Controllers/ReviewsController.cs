@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using Client.Contracts;
 using Client.Models;
-using Client.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using Client.Contracts;
 
 namespace Client.Controllers
 {
+    [Authorize]
     public class ReviewsController : Controller
     {
         private readonly IReviewService _service;
@@ -20,7 +21,7 @@ namespace Client.Controllers
         // GET: Reviews/Create
         public IActionResult Create()
         {
-            
+
             var model = new ReviewViewModel
             {
                 RatingDropdown = _service.GetRatingDropdopwn()
@@ -60,7 +61,7 @@ namespace Client.Controllers
         {
             var revs = await _service.GetReviews();
 
-            var vms = (from rev in (List<Review>) revs select ReviewToViewModel(rev)).ToList();
+            var vms = (from rev in (List<Review>)revs select ReviewToViewModel(rev)).ToList();
 
             return View(vms);
         }
@@ -69,7 +70,7 @@ namespace Client.Controllers
         {
             var vm = new ReviewViewModel
             {
-                Id = review.Id, 
+                Id = review.Id,
                 Comment = review.Comment,
                 RatingId = review.RatingId,
                 RatingDropdown = _service.GetRatingDropdopwn()

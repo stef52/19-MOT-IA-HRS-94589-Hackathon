@@ -1,9 +1,9 @@
-﻿using Client.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Client.Contracts;
+﻿using Client.Contracts;
+using Client.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Client.Services
 {

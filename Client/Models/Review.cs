@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Client.Models
 {
@@ -8,10 +8,10 @@ namespace Client.Models
     {
         public long Id { get; set; }
 
-        [MaxLength(250)] 
+        [MaxLength(250)]
         public string Comment { get; set; }
 
-        [Required] 
+        [Required]
         public int RatingId { get; set; }
     }
 
