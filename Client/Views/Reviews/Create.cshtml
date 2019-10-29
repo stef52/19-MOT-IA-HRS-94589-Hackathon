@@ -1,4 +1,4 @@
-﻿@model Client.Models.Review
+﻿@model Client.Models.ReviewViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -9,18 +9,18 @@
 <h4>Review</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Comment" class="control-label"></label>
-                <input asp-for="Comment" class="form-control" />
-                <span asp-validation-for="Comment" class="text-danger"></span>
+                @Html.LabelFor(m => m.RatingId)
+                @Html.DropDownListFor(m => m.RatingId, Model.RatingDropdown)
+                <span asp-validation-for="RatingId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Rating" class="control-label"></label>
-                <input asp-for="Rating" class="form-control" />
-                <span asp-validation-for="Rating" class="text-danger"></span>
+                <label asp-for="Comment" class="control-label"></label>
+                @Html.TextArea("Comment", null, new { @class = "form-control" })
+                <span asp-validation-for="Comment" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

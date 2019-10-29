@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Client.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Client.Contracts
 {
@@ -8,5 +10,6 @@ namespace Client.Contracts
         void Add(Review review);
         Task<object> GetReview(long? id);
         Task<object> GetReviews();
+        IEnumerable<SelectListItem> GetRatingDropdopwn();
     }
 }

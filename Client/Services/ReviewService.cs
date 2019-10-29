@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Client.Contracts;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Linq;
 
 namespace Client.Services
 {
@@ -25,6 +27,18 @@ namespace Client.Services
         {
             var client = new HttpClient();
             return await client.GetAsync<List<Review>>(BaseUrl + "Review");
+        }
+
+        public IEnumerable<SelectListItem> GetRatingDropdopwn()
+        {
+            var client = new HttpClient();
+            var ratingResult = client.GetAsync<List<Rating>>(BaseUrl + "Rating").Result;
+            var ratings = ratingResult.Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name
+            });
+            return new SelectList(ratings, "Value", "Text");
         }
     }
 }

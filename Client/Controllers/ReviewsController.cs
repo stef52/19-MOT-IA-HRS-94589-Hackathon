@@ -1,4 +1,6 @@
-﻿using Client.Models;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Client.Models;
 using Client.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -18,7 +20,12 @@ namespace Client.Controllers
         // GET: Reviews/Create
         public IActionResult Create()
         {
-            return View();
+            
+            var model = new ReviewViewModel
+            {
+                RatingDropdown = _service.GetRatingDropdopwn()
+            };
+            return View(model);
         }
 
         // POST: Reviews/Create
@@ -26,7 +33,7 @@ namespace Client.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Comment,Rating")] Review review)
+        public async Task<IActionResult> Create([Bind("Id,Comment,RatingId")] ReviewViewModel review)
         {
             if (ModelState.IsValid)
             {
@@ -45,13 +52,31 @@ namespace Client.Controllers
             var review = await _service.GetReview(id);
             if (review == null) return NotFound();
 
-            return View(review);
+            return View(ReviewToViewModel((Review)review));
         }
 
         // GET: Reviews
         public async Task<IActionResult> Index()
         {
-            return View(await _service.GetReviews());
+            var revs = await _service.GetReviews();
+
+            var vms = (from rev in (List<Review>) revs select ReviewToViewModel(rev)).ToList();
+
+            return View(vms);
+        }
+
+        private ReviewViewModel ReviewToViewModel(Review review)
+        {
+            var vm = new ReviewViewModel
+            {
+                Id = review.Id, 
+                Comment = review.Comment,
+                RatingId = review.RatingId,
+                RatingDropdown = _service.GetRatingDropdopwn()
+            };
+            vm.RatingName = vm.RatingDropdown.First(x => x.Value == vm.RatingId.ToString()).Text;
+
+            return vm;
         }
     }
 }

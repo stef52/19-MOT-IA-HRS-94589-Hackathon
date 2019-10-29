@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Client.Models
 {
@@ -10,6 +12,14 @@ namespace Client.Models
         public string Comment { get; set; }
 
         [Required] 
-        public int Rating { get; set; }
+        public int RatingId { get; set; }
+    }
+
+    public class ReviewViewModel : Review
+    {
+        public IEnumerable<SelectListItem> RatingDropdown { get; set; }
+
+        public string RatingName;
+
     }
 }
