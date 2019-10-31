@@ -27,7 +27,7 @@ namespace TC_Hackathon_Reviews.Services
 
         public async Task<ActionResult<IEnumerable<ReviewItem>>> GetReviewsAsync()
         {
-            return await _context.ReviewItem.ToListAsync();
+            return await _context.ReviewItem.OrderByDescending(x=>x.Id).ToListAsync();
         }
 
         public ValueTask<ReviewItem> GetReview(long id)

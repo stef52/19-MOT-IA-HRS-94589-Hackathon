@@ -1,5 +1,3 @@
-// Unused usings removed
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -33,10 +31,7 @@ namespace TC_Hackathon_Reviews
 
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
             // specifying the Swagger JSON endpoint.
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            });
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Review API V1"); });
 
             app.UseRouting();
 
@@ -47,11 +42,6 @@ namespace TC_Hackathon_Reviews
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddDbContext<ReviewContext>(opt =>
-            //    opt.UseInMemoryDatabase("ReviewList"));
-            //services.AddDbContext<RatingContext>(opt =>
-            //    opt.UseInMemoryDatabase("RatingList"));
-
             services.AddDbContext<ReviewContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
@@ -62,8 +52,20 @@ namespace TC_Hackathon_Reviews
             services.AddControllers();
 
             // Register the Swagger generator, defining 1 or more Swagger documents
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" }); });
-
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "Review API",
+                    Description = "API for TC feedback system",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Stephen Bakalian",
+                        Email = "stephen.bakalian@tc.gc.ca"
+                    }
+                });
+            });
         }
     }
 }
