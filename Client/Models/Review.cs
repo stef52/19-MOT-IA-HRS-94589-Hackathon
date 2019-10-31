@@ -12,13 +12,16 @@ namespace Client.Models
         public string Comment { get; set; }
 
         [Required]
+        [Display(Name = "Rating")]
         public int RatingId { get; set; }
     }
 
     public class ReviewViewModel : Review
     {
+        [Display(Name = "Rating")]
         public IEnumerable<SelectListItem> RatingDropdown { get; set; }
 
+        [Display(Name = "Rating")]
         public string RatingName;
 
     }
