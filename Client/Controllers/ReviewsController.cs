@@ -21,7 +21,6 @@ namespace Client.Controllers
         // GET: Reviews/Create
         public IActionResult Create()
         {
-
             var model = new ReviewViewModel
             {
                 RatingDropdown = _service.GetRatingDropdopwn()

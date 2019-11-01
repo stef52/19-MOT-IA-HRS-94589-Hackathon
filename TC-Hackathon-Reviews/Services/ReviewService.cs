@@ -20,14 +20,15 @@ namespace TC_Hackathon_Reviews.Services
             _ratingService = ratingService;
         }
 
-        public bool ReviewItemExists(long id)
+        public async Task<int> Add(ReviewItem reviewItem)
         {
-            return _context.ReviewItem.Any(e => e.Id == id);
-        }
+            var rating = await _ratingService.GetRating(reviewItem.RatingId);
 
-        public async Task<ActionResult<IEnumerable<ReviewItem>>> GetReviewsAsync()
-        {
-            return await _context.ReviewItem.OrderByDescending(x=>x.Id).ToListAsync();
+            if (rating == null) return 0;
+
+            _context.ReviewItem.Add(reviewItem);
+            await _context.SaveChangesAsync();
+            return 1;
         }
 
         public ValueTask<ReviewItem> GetReview(long id)
@@ -35,18 +36,14 @@ namespace TC_Hackathon_Reviews.Services
             return _context.ReviewItem.FindAsync(id);
         }
 
-        public async Task<int> Add(ReviewItem reviewItem)
+        public async Task<ActionResult<IEnumerable<ReviewItem>>> GetReviewsAsync()
         {
-            var rating = await _ratingService.GetRating(reviewItem.RatingId);
+            return await _context.ReviewItem.OrderByDescending(x => x.Id).ToListAsync();
+        }
 
-            if (rating == null)
-            {
-                return 0;
-            }
-
-            _context.ReviewItem.Add(reviewItem);
-            await _context.SaveChangesAsync();
-            return 1;
+        public bool ReviewItemExists(long id)
+        {
+            return _context.ReviewItem.Any(e => e.Id == id);
         }
     }
 }

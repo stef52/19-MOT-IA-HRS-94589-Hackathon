@@ -1,9 +1,11 @@
+using Client.Areas.Identity;
 using Client.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
-[assembly: HostingStartup(typeof(Client.Areas.Identity.IdentityHostingStartup))]
+[assembly: HostingStartup(typeof(IdentityHostingStartup))]
+
 namespace Client.Areas.Identity
 {
     public class IdentityHostingStartup : IHostingStartup

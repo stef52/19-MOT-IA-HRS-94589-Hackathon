@@ -6,7 +6,7 @@ namespace TC_Hackathon_Reviews.Contracts
 {
     public interface IRatingService
     {
-        Task<List<RatingItem>> GetRatings();
         ValueTask<RatingItem> GetRating(long id);
+        Task<List<RatingItem>> GetRatings();
     }
 }

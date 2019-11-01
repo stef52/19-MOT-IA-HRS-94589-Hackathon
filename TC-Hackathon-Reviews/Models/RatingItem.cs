@@ -7,7 +7,8 @@ namespace TC_Hackathon_Reviews.Models
         [Key]
         [Required]
         public long Id { get; set; }
-        [Required]
+
+        [Required] 
         public string Name { get; set; }
     }
 }

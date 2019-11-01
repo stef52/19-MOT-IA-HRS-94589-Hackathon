@@ -14,10 +14,7 @@ namespace TC_Hackathon_Reviews.Models
                 new ReviewContext(serviceProvider.GetRequiredService<DbContextOptions<ReviewContext>>()))
             {
                 // Look for any ratings.
-                if (context.RatingItem.Any())
-                {
-                    return; // DB has been seeded
-                }
+                if (context.RatingItem.Any()) return; // DB has been seeded
 
                 context.RatingItem.AddRange(
                     new RatingItem

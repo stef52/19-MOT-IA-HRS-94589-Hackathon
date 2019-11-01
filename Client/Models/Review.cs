@@ -18,11 +18,10 @@ namespace Client.Models
 
     public class ReviewViewModel : Review
     {
-        [Display(Name = "Rating")]
-        public IEnumerable<SelectListItem> RatingDropdown { get; set; }
-
-        [Display(Name = "Rating")]
+        [Display(Name = "Rating")] 
         public string RatingName;
 
+        [Display(Name = "Rating")]
+        public IEnumerable<SelectListItem> RatingDropdown { get; set; }
     }
 }

@@ -16,14 +16,14 @@ namespace TC_Hackathon_Reviews.Services
             _context = context;
         }
 
-        public Task<List<RatingItem>> GetRatings()
-        {
-            return _context.RatingItem.ToListAsync();
-        }
-
         public ValueTask<RatingItem> GetRating(long id)
         {
             return _context.RatingItem.FindAsync(id);
+        }
+
+        public Task<List<RatingItem>> GetRatings()
+        {
+            return _context.RatingItem.ToListAsync();
         }
     }
 }

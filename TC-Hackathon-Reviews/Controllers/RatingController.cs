@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using TC_Hackathon_Reviews.Contracts;
 using TC_Hackathon_Reviews.Models;
 
@@ -35,13 +35,9 @@ namespace TC_Hackathon_Reviews.Controllers
         {
             var ratingItem = await _ratingService.GetRating(id);
 
-            if (ratingItem == null)
-            {
-                return NotFound();
-            }
+            if (ratingItem == null) return NotFound();
 
             return ratingItem;
         }
-
     }
 }

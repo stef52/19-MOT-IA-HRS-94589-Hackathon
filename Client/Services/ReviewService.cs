@@ -17,18 +17,6 @@ namespace Client.Services
             await client.PostAsync<Review, Review>(BaseUrl + "Review", review);
         }
 
-        public async Task<object> GetReview(long? id)
-        {
-            var client = new HttpClient();
-            return await client.GetAsync<Review>(BaseUrl + "Review/" + id);
-        }
-
-        public async Task<object> GetReviews()
-        {
-            var client = new HttpClient();
-            return await client.GetAsync<List<Review>>(BaseUrl + "Review");
-        }
-
         public IEnumerable<SelectListItem> GetRatingDropdopwn()
         {
             var client = new HttpClient();
@@ -39,6 +27,18 @@ namespace Client.Services
                 Text = x.Name
             });
             return new SelectList(ratings, "Value", "Text");
+        }
+
+        public async Task<object> GetReview(long? id)
+        {
+            var client = new HttpClient();
+            return await client.GetAsync<Review>(BaseUrl + "Review/" + id);
+        }
+
+        public async Task<object> GetReviews()
+        {
+            var client = new HttpClient();
+            return await client.GetAsync<List<Review>>(BaseUrl + "Review");
         }
     }
 }

@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TC_Hackathon_Reviews.Contracts;
-using TC_Hackathon_Reviews.Data;
 using TC_Hackathon_Reviews.Models;
 
 namespace TC_Hackathon_Reviews.Controllers
@@ -44,11 +42,11 @@ namespace TC_Hackathon_Reviews.Controllers
 
         // POST: api/ReviewItems
         /// <summary>
-        /// Creates a Review.
+        ///     Creates a Review.
         /// </summary>
         /// <returns>A newly created Review</returns>
         /// <response code="201">Returns the newly created item</response>
-        /// <response code="400">If the item is null</response>   
+        /// <response code="400">If the item is null</response>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
